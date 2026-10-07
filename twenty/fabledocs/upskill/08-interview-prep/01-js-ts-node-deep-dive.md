@@ -79,7 +79,7 @@ Mid adds: default-export interop, `require` of ESM-only packages failing, dual-p
 Senior includes: monorepo dimension — one package's module format constrains consumers; resolutions pinning graphql to one instance ([package.json#L28](../../../package.json#L28)) to avoid the two-realms bug.
 
 ## Q13: Monorepo vs polyrepo?
-Round: tooling. Repo anchor: workspace list + Nx ([package.json#L46-L60](../../../package.json#L46-L60))
+Round: tooling. Repo anchor: workspace list + Nx ([package.json#L48-L69](../../../package.json#L48-L69))
 Mid adds: atomic cross-layer changes vs build orchestration cost; task graph + caching + affected-only CI as the mitigations.
 Senior includes: ownership/contract discipline still required inside a monorepo — shared package as the only sanctioned coupling point.
 

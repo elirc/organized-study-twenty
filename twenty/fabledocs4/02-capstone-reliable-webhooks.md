@@ -42,8 +42,15 @@ Write 2–3 pages before any code. Must answer:
    must the consumer do with it? Check what headers already exist
    (`X-Twenty-Webhook-Timestamp`, `-Signature`, `-Nonce` in
    `call-webhook.job.ts:60-70`) — is the nonce reusable as an idempotency key?
-   (Careful: it's generated per *attempt*. Is that what you want? No. Say why.)
-4. **Retry policy.** Backoff schedule, max attempts, and what happens after
+   (Careful: it's generated per *attempt*. Is that what you want? No. Say why.
+   Second trap: the nonce is added *after* the HMAC is computed over
+   `timestamp:payload` (`call-webhook.job.ts:28-31` vs `:67-69`), so it is
+   not integrity-protected — your idempotency key must live inside the signed
+   payload or the signed string must be extended.)
+4. **Retry policy.** Note the starting point: the BullMQ driver turns
+   `retryLimit` into `attempts` but sets **no `backoff`**
+   (`core-modules/message-queue/drivers/bullmq.driver.ts:245-259`), so
+   "just rethrow" would retry immediately. Backoff schedule, max attempts, and what happens after
    the last failure (dead-letter: stored where, alerting whom, replayable how?).
 5. **Chunking.** Current design delivers 20 per job under `Promise.all`.
    Keep chunks (throughput) or switch to per-delivery jobs (clean retries)?

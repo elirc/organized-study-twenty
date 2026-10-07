@@ -105,7 +105,8 @@ General shape: HMAC-SHA256 over `timestamp:body` with a shared secret; send sign
 Real example: [call-webhook.job.ts#L23-L70](../../../packages/twenty-server/src/engine/metadata-modules/webhook/jobs/call-webhook.job.ts#L23-L70)
 Second example: secret generation, [generate-webhook-secret.util.ts](../../../packages/twenty-server/src/engine/metadata-modules/webhook/utils/generate-webhook-secret.util.ts)
 Why this implementation works: timestamp binding bounds replay windows; secret never leaves the payload builder (`const { secret, ...payloadWithoutSecret }`, L58).
-Failure modes: receivers that don't verify; JSON key-order instability making signatures brittle across serializers.
+Failure modes: receivers that don't verify; JSON key-order instability making signatures brittle across serializers; **the nonce is not covered by the HMAC** (signature over `timestamp:payload` at L28-L31, nonce header added afterwards at L67-L69) — a receiver that dedupes on the nonce can be bypassed by a replay that changes it, so receivers must dedupe on something signed (timestamp window + a payload field) instead.
+**Check:** your receiver pseudocode rejects (a) a body altered by one byte, (b) a timestamp outside ±5 min, and (c) a byte-identical replay inside the window — and for (c) you can name which *signed* value you deduplicate on.
 Interview angle: "Secure a webhook" — this is the checklist answer, plus SSRF on the *sending* side (Pattern 10).
 Drill: write receiver-side verification pseudocode including tolerance window.
 

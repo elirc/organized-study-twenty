@@ -2,7 +2,7 @@
 
 ## Why a monorepo, and what Nx buys
 
-One repo holds the server, front, shared types, UI kit, SDK, and e2e suite ([package.json](../../../package.json#L46-L60)). The payoff: a cross-layer change (schema + API + UI + tests) is **one atomic PR** — no version dance between repos. The cost: build orchestration, which is Nx's job.
+One repo holds the server, front, shared types, UI kit, SDK, and e2e suite ([package.json](../../../package.json#L48-L69)). The payoff: a cross-layer change (schema + API + UI + tests) is **one atomic PR** — no version dance between repos. The cost: build orchestration, which is Nx's job.
 
 Nx mental model: a **project graph** (who imports whom) plus **task pipelines** ([nx.json](../../../nx.json)) declaring that, e.g., building `twenty-front` requires building its dependencies first — which is why CLAUDE.md says build `twenty-shared` first. Nx caches task outputs keyed by input hashes: unchanged package → cache hit → seconds instead of minutes. `lint:diff-with-main` targets exist precisely to keep feedback loops short on a huge codebase.
 
@@ -18,7 +18,7 @@ Transferable: every serious monorepo tool (Nx, Turborepo, Bazel) is the same thr
 
 ## Yarn 4 workspaces
 
-Yarn Berry with `packageManager: yarn@4.13.0` pinning ([package.json](../../../package.json#L23)). Notable: the `resolutions` block (L27-L39) force-pins transitive deps (graphql, typescript) — one version across all workspaces prevents the classic "two graphql instances" runtime bug. There's even a patched dependency via `patch:` protocol (L34-L35) — vendoring a fix without forking. Engines block (L18-L22) hard-pins Node `^24.5.0` and rejects npm (`"npm": "please-use-yarn"` — a cute guardrail worth stealing).
+Yarn Berry with `packageManager: yarn@4.13.0` pinning ([package.json](../../../package.json#L26)). Notable: the `resolutions` block (L27-L39) force-pins transitive deps (graphql, typescript) — one version across all workspaces prevents the classic "two graphql instances" runtime bug. There's even a patched dependency via `patch:` protocol (L34-L35) — vendoring a fix without forking. Engines block (L18-L22) hard-pins Node `^24.5.0` and rejects npm (`"npm": "please-use-yarn"` — a cute guardrail worth stealing).
 
 ## Vite + Linaria on the front
 

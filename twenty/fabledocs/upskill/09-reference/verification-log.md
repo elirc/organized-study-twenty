@@ -49,3 +49,14 @@ Authored: 2026-07-11. Method: static reading of a fresh clone (no git history �
 ## Line-number drift warning
 
 Anchors are exact as of authoring. The upstream project moves fast; if an anchor misses, search the quoted symbol name in the same file/directory.
+
+## Second pass — 2026-10-07 (study-snapshot import `organized-study-twenty`)
+
+Read-only. Nothing installed, built or run.
+
+- Mechanically resolved every `#Lx-Ly` link in `fabledocs/` (162 unique ranged anchors): all target files exist and every range is inside the file. Spot-read the target lines of all 162 against the surrounding claim; server and front anchors still land on the described code.
+- **Drift fixed:** root `package.json` gained lines since authoring — scripts are now L42-L47 (`start` at L46), engines L19-L23, `packageManager` L26, workspaces L48-L69 (18 workspace packages). Links updated.
+- **Drift fixed:** Review Kata 1's model comment said rethrowing would use "the queue's backoff". There is none: `bullmq.driver.ts:245-259` sets `attempts: 1 + retryLimit` and no `backoff`, and server source has no `defaultJobOptions` (git-grep). Risk 13.
+- **New finding:** the webhook nonce is not part of the signed string (`call-webhook.job.ts:28-31` vs `:67-69`). Risk 14.
+- Snapshot note: the import root's `SECURITY_FILTERED_FILES.md` lists files removed by secret scanning (some CI workflows, vitest configs, a few front mocks and the enterprise public key). None of those are anchored by this curriculum.
+

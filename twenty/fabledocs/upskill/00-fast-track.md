@@ -4,7 +4,7 @@ Goal: by Sunday night you can run the app, trace two end-to-end flows, make one 
 
 ## Saturday morning — run it
 
-All commands are __inferred__ from [CLAUDE.md](../../CLAUDE.md), [package.json](../../package.json#L40-L45), and `packages/twenty-utils/setup-dev-env.sh` (not executed while writing these docs). Requires Node `^24.5.0` and Yarn `>=4.0.2` ([package.json](../../package.json#L18-L22)).
+All commands are __inferred__ from [CLAUDE.md](../../CLAUDE.md), [package.json](../../package.json#L42-L47), and `packages/twenty-utils/setup-dev-env.sh` (not executed while writing these docs). Requires Node `^24.5.0` and Yarn `>=4.0.2` ([package.json](../../package.json#L19-L23)).
 
 ```bash
 yarn install                                   # inferred

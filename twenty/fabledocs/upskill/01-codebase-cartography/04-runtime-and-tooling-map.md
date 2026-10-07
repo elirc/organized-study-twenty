@@ -4,9 +4,9 @@
 
 | Concern | Tool | Where configured |
 | --- | --- | --- |
-| Package manager | Yarn 4 (Berry), workspaces | [package.json](../../../package.json#L23-L26), `yarn.config.cjs` |
+| Package manager | Yarn 4 (Berry), workspaces | [package.json](../../../package.json#L24-L26), `yarn.config.cjs` |
 | Task runner | Nx 22 | [nx.json](../../../nx.json), per-package `project.json` |
-| Node version | `^24.5.0` (pinned, ES2023+ features available) | [package.json](../../../package.json#L18-L22) |
+| Node version | `^24.5.0` (pinned, ES2023+ features available) | [package.json](../../../package.json#L19-L23) |
 | Front build | Vite + Linaria (zero-runtime CSS-in-JS) | `packages/twenty-front/vite.config.ts` |
 | Server build | Nx + tsc/webpack per project.json | `packages/twenty-server/project.json` |
 | Unit tests | Jest per package (`jest.config.mjs`) | [jest.preset.js](../../../jest.preset.js) |

@@ -13,7 +13,7 @@ Fake diff summary: inside `callWebhook`'s catch block, adds `for (let i=0;i<3;i+
 Files this resembles: [call-webhook.job.ts#L102-L116](../../../packages/twenty-server/src/engine/metadata-modules/webhook/jobs/call-webhook.job.ts#L102-L116)
 Expected findings — Blocking: immediate in-process retries hammer a failing receiver with no backoff; total job time can now hit 20s under `Promise.all` of 20 — worker starvation. Important: the queue already has retry machinery (`retryLimit` at enqueue + [bullmq.driver.ts#L248](../../../packages/twenty-server/src/engine/core-modules/message-queue/drivers/bullmq.driver.ts#L248)); rethrowing selectively is the idiomatic fix. Audit events now fire multiple times per logical delivery — is that intended? Optional: 4xx vs 5xx should be treated differently (4xx will never succeed).
 Good review comment example:
-> Retrying inline defeats the queue's backoff and blocks the chunk's other 19 deliveries. Could we instead rethrow on retryable statuses and let `retryLimit` handle spacing? That also keeps one audit event per attempt.
+> Retrying inline blocks the chunk's other 19 deliveries. Could we instead rethrow on retryable statuses and let the queue's `retryLimit` own retries? One caveat to fix in the same PR: the BullMQ driver sets `attempts` but **no `backoff`** ([bullmq.driver.ts#L245-L259](../../../packages/twenty-server/src/engine/core-modules/message-queue/drivers/bullmq.driver.ts#L245-L259); no `defaultJobOptions` anywhere in `twenty-server/src`), so queue retries would also fire immediately — add exponential backoff when you turn them on. That keeps one audit event per attempt.
 
 ## Kata 2: "Fast count endpoint"
 

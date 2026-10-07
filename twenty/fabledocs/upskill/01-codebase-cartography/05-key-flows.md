@@ -129,7 +129,7 @@ Tests that cover it: unit tests for payload transforms ([transform-event-to-webh
 
 What juniors miss: `retryLimit: 3` looks like "retries 3 times" but the inner catch makes delivery effectively **at-most-once with a single attempt**. Whether that's a bug or a product decision (avoid hammering broken receivers; failures are auditable) is a design conversation — treat it as *confirmed behavior, debatable intent*.
 
-What seniors notice: no transactional outbox between step 1 and 2; SSRF defense is centralized in a client service instead of scattered checks (strength); nonce without receiver-side storage doesn't actually prevent replay (limitation to discuss, not a vuln claim).
+What seniors notice: no transactional outbox between step 1 and 2; SSRF defense is centralized in a client service instead of scattered checks (strength); nonce without receiver-side storage doesn't actually prevent replay — and the nonce is generated *after* the HMAC and is not part of the signed string (`timestamp:payload`, L28-L31 vs L67-L69), so an attacker replaying a captured request can swap the nonce freely; only the timestamp is integrity-protected (limitation to discuss, not a vuln claim).
 
 Interview angle: "Design webhook delivery" — this flow *is* the model answer, including what you'd add (outbox, exponential backoff, dead-letter queue, per-endpoint circuit breaker).
 

@@ -2,7 +2,7 @@
 
 ## Repo shape: Nx monorepo, Yarn 4 workspaces
 
-Workspaces are declared in [package.json](../../../package.json#L46-L60). The ones that matter daily:
+Workspaces are declared in [package.json](../../../package.json#L48-L69). The ones that matter daily:
 
 ```
 packages/
@@ -32,7 +32,7 @@ Redis (cache, sessions, queues)                 queue-worker process
 ClickHouse (optional analytics)                 (webhooks, workflows, sync jobs)
 ```
 
-Three processes run in dev via the root `start` script ([package.json](../../../package.json#L44)): server, front, and worker. The worker is a *separate process* consuming the same codebase's `@Processor` classes — e.g. [call-webhook.job.ts](../../../packages/twenty-server/src/engine/metadata-modules/webhook/jobs/call-webhook.job.ts#L15-L21). If you forget the worker is separate, you'll wonder why your webhook code "never runs" while debugging the server process.
+Three processes run in dev via the root `start` script ([package.json](../../../package.json#L46)): server, front, and worker. The worker is a *separate process* consuming the same codebase's `@Processor` classes — e.g. [call-webhook.job.ts](../../../packages/twenty-server/src/engine/metadata-modules/webhook/jobs/call-webhook.job.ts#L15-L21). If you forget the worker is separate, you'll wonder why your webhook code "never runs" while debugging the server process.
 
 ## Ownership map (server)
 
